@@ -1,7 +1,9 @@
 from src.mlproject.constant import *
 from pathlib import Path
 from src.mlproject.utils.common import read_yaml, create_directory
-from src.mlproject.entity.config_entity import(DataIngestionConfig)
+from src.mlproject.entity.config_entity import(DataIngestionConfig,
+                                               DataValidationConfig,
+                                               DataTransformationConfig)
 
 class ConfigurationManager:
     def __init__(
@@ -25,3 +27,25 @@ class ConfigurationManager:
             unzip_dir=config.unzip_dir)
         
         return data_ingestion_config_obj
+    
+    def get_data_validation_config(self) -> DataValidationConfig:
+        config = self.config.data_validation
+        schema = self.schema.COLUMNS
+        create_directory([config.root_dir])
+        data_validation_config_obj = DataValidationConfig(
+            root_dir = config.root_dir,
+            unzip_data_dir = config.unzip_data_dir,
+            STATUS_FILE = config.STATUS_FILE,
+            all_schema = schema
+        )
+        return data_validation_config_obj
+    
+    def get_data_transformation_config(self) -> DataTransformationConfig:
+        config = self.config.data_transformation
+        create_directory([config.root_dir])
+        data_transformation_config_obj = DataTransformationConfig(
+            root_dir= config.root_dir,
+            data_path= config.data_path
+        )
+        return data_transformation_config_obj
+

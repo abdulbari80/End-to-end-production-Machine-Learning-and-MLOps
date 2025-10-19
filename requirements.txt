@@ -13,4 +13,8 @@ joblib
 types-PyYAML
 Flask
 Flask-cors
+feature-engine
+pycountry -q
+category-encoders
+feature-engine
 -e .

@@ -8,6 +8,7 @@ project_name = 'mlproject'
 
 list_of_files = [
    ".github/workflows/.gitkeep",
+   f"src/__init__.py",
    f"src/{project_name}/__init__.py",
    f"src/{project_name}/component/__init__.py",
    f"src/{project_name}/pipeline/__init__.py",
@@ -18,6 +19,7 @@ list_of_files = [
    f"src/{project_name}/constant/__init__.py",
    f"src/{project_name}/entity/__init__.py",
    f"src/{project_name}/entity/config_entity.py",
+   f"src/{project_name}/pipeline/data_transormation_pipeline.py",
    "config/config.yaml",
    "notebook/eda.py",
    "templates/index.html",

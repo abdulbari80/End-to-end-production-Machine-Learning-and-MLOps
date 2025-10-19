@@ -9,7 +9,6 @@ from box.exceptions import BoxValueError
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 from pandas.api.types import is_numeric_dtype
 import matplotlib.pyplot as plt
 
@@ -128,6 +127,7 @@ class DataTransformation:
     def get_data_transformation(self):
         """This splits dataset into train and test sets
         and return None"""
+        logging.info("Data loaded from data_ingestion directory")
         df = pd.read_csv(self.config.data_path)
         # Remove duplicate instances
         df.drop_duplicates(inplace=True)
@@ -171,14 +171,28 @@ class DataTransformation:
         df['inflation_adj_salary'] = df.apply(self.adjust_salary, axis=1)
         df['work_year'] = df['work_year'].astype('category')
 
+        # Put rare countries in 'employee_residency' into 'other' category
+        theshold = 25
+        val_count =  df['employee_residence'].value_counts()
+        top_index = val_count[val_count > theshold].index
+        df['employee_residence_top'] = df['employee_residence'].apply(
+            lambda x: 'Other' if x not in top_index else x)
+        # Select top 9 categories in company_location and remaining in other category
+        top_n = 9
+        top_n_index = df['company_location'].value_counts().nlargest(9).index
+        df['company_location_top'] = df['company_location'].apply(
+            lambda x: 'Other' if x not in top_n_index else x)
+        # Drop redundant or less relevant columns
         cols_to_drop = ['job_title', 'salary', 'salary_currency',
-                        'salary_in_usd', 'employee_residence_top',
-                        'company_location_top']
+                        'salary_in_usd', 'employee_residence',
+                        'company_location']
         cols_df = df.columns.to_list()
         final_cols_to_drop = []
         for col in cols_to_drop:
               if col in cols_df:
                     final_cols_to_drop.append(col)
+        logging.info(f"columns available: {cols_df}")
+        logging.info(f"columns to drop: {final_cols_to_drop}")
         df_tr = df.drop(columns = final_cols_to_drop,
                                    axis=1)
         # Many outliers observed in salary variable during EDA
@@ -196,21 +210,23 @@ class DataTransformation:
     def get_col_transformer_pipeline(self):
         logging.info('Data transformation starts >>>>>')
         try:
-            rare_cat_columns = ['employee_residence', 'company_location']
+            #rare_cat_columns = []
             cat_columns = ['work_year', 
                            'experience_level', 
                            'employment_type',
                            'remote_ratio', 
                            'company_size', 
-                           'job_category']
-            rare_cat_pipeline = Pipeline(
-                steps=[
-                    ('rare_cat_pipeline', SimpleImputer(strategy='most_frequent')),
-                    ('rare_label_encoder', RareLabelEncoder(tol=0.01, 
-                                                            n_categories=10,
-                                                            replace_with='Other'))
-                ]
-            )
+                           'job_category', 
+                           'employee_residence_top', 
+                           'company_location_top']
+            #rare_cat_pipeline = Pipeline(
+            #    steps=[
+            #        ('rare_cat_pipeline', SimpleImputer(strategy='most_frequent')),
+            #        ('rare_label_encoder', RareLabelEncoder(tol=0.01, 
+            #                                                n_categories=10,
+            #                                                replace_with='Other'))
+            #    ]
+            #)
             cat_pipeline = Pipeline(
                 steps = [
                     ('cat_pipeline', SimpleImputer(strategy='most_frequent')),
@@ -220,14 +236,15 @@ class DataTransformation:
 
             trans_cols = ColumnTransformer(
                 [
-                    ('num_pipeline', rare_cat_pipeline, rare_cat_columns),
+                    #('rare_cat_pipeline', rare_cat_pipeline, rare_cat_columns),
                     ('cat_pipeline', cat_pipeline, cat_columns)
-                ]
+                ],
+                remainder='passthrough'
             )
             logging.info('Data preprocessing pipeline created.')
             return trans_cols           
         except BoxValueError as e:
-            logging.error(f"{e}")
+            logging.error(f"Error: {e}")
 
     def initiate_data_transformation(self, test_size:float=0.20):
         """ This saves fitted proprocessing model
@@ -271,6 +288,6 @@ class DataTransformation:
                                                 self.config.train_array))
             joblib.dump(test_arr, os.path.join(self.config.root_dir, 
                                                self.config.test_array))
-            #return (train_arr, test_arr)
+            
         except BoxValueError as e:
             logging.error(f"{e}")

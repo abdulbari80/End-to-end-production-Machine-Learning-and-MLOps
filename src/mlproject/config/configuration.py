@@ -3,7 +3,9 @@ from pathlib import Path
 from src.mlproject.utils.common import read_yaml, create_directory
 from src.mlproject.entity.config_entity import(DataIngestionConfig,
                                                DataValidationConfig,
-                                               DataTransformationConfig)
+                                               DataTransformationConfig,
+                                               ModelTrainerConfig,
+                                               ModelEvaluationConfig)
 
 class ConfigurationManager:
     def __init__(
@@ -48,8 +50,19 @@ class ConfigurationManager:
             data_path=config.data_path,
             data_transform_obj_name=config.data_transform_obj_name,
             train_array=config.train_array,
-            test_array=config.test_array
-            )
+            test_array=config.test_array)
         
         return data_transformation_config_obj
+    
+    def get_model_training_config(self) -> ModelTrainerConfig:
+        config = self.config.model_trainer
+        create_directory([config.root_dir])
+        model_train_config_obj = ModelTrainerConfig(
+            root_dir=config.root_dir,
+            model_name=config.model_name,
+            train_array_path=config.train_array_path,
+            test_array_path=config.test_array_path
+            )
+        
+        return model_train_config_obj
 

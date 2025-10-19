@@ -29,9 +29,6 @@ class ModelTrainerConfig:
     model_name: str
     train_array_path: Path
     test_array_path: Path
-    alpha: float
-    l1_ratio: float
-    target_column: str
 
 @dataclass(frozen=True)
 class ModelEvaluationConfig:

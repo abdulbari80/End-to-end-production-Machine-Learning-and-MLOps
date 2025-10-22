@@ -8,7 +8,7 @@ class ModelTrainingPipeline:
     def train_models(self):
         config = ConfigurationManager().get_model_training_config()
         model_train_obj = ModelTrainer(config=config)
-        model_train_obj.find_best_model()
+        model_train_obj.find_top_models()
 
 if __name__ == '__main__':
     "This is a model training pipeline"

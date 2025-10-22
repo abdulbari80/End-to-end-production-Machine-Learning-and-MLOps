@@ -32,6 +32,7 @@ class DataTransformation:
         self.config = config
     
     def broad_job_category(self, job_title):
+        """This puts close job roles in common buckets"""
         bi_analyst = ['BI Data Analyst', 'Business Data Analyst', 'BI Developer', 'BI Analyst', 
                         'Business Intelligence Engineer', 'BI Data Engineer', 'Power BI Developer']
         data_analyst = ['Data Analyst', 'Data Quality Analyst', 'Product Data Analyst', 'Data Analytics Lead' 
@@ -125,8 +126,9 @@ class DataTransformation:
         return adjsuted_salary
 
     def get_data_transformation(self):
-        """This splits dataset into train and test sets
-        and return None"""
+        """This processes raw data including feature engineering as well as
+        stores and returns a clean dataframe.  
+        """
         logging.info("Data loaded from data_ingestion directory")
         df = pd.read_csv(self.config.data_path)
         # Remove duplicate instances
@@ -208,6 +210,7 @@ class DataTransformation:
         return df_outlier_free
     
     def get_col_transformer_pipeline(self):
+        """This builds a pipeline to process data"""
         logging.info('Data transformation starts >>>>>')
         try:
             #rare_cat_columns = []
@@ -219,14 +222,7 @@ class DataTransformation:
                            'job_category', 
                            'employee_residence_top', 
                            'company_location_top']
-            #rare_cat_pipeline = Pipeline(
-            #    steps=[
-            #        ('rare_cat_pipeline', SimpleImputer(strategy='most_frequent')),
-            #        ('rare_label_encoder', RareLabelEncoder(tol=0.01, 
-            #                                                n_categories=10,
-            #                                                replace_with='Other'))
-            #    ]
-            #)
+            
             cat_pipeline = Pipeline(
                 steps = [
                     ('cat_pipeline', SimpleImputer(strategy='most_frequent')),
@@ -247,15 +243,8 @@ class DataTransformation:
             logging.error(f"Error: {e}")
 
     def initiate_data_transformation(self, test_size:float=0.20):
-        """ This saves fitted proprocessing model
-        Parameter:
-            train_data_path(str): training data file path
-            test_data_path(str): testing data file path
-
-        Return:
-            (array): train_arr: transformed training array
-            (array): test_arr: transformed testing array
-            (str): preprocessor_obj_path: saved preprocessor object file path
+        """ This stores data transormation pipeline object 
+        with train and test arrays in the artifacts.
         """
         try:
             df = self.get_data_transformation()

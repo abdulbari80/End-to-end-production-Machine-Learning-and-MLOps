@@ -10,7 +10,7 @@ class DataTransformationPipeline:
         data_transform_config_obj = config_obj.get_data_transformation_config()
         logging.info("Configuration manager is instantiated")
         data_transorm_obj = DataTransformation(config=data_transform_config_obj)
-        data_transorm_obj.initiate_data_transformation(test_size=0.25)
+        data_transorm_obj.initiate_data_transformation(test_size=0.45)
         logging.info("Data transformed and stored in the artifacts with the pipeline object")
 
 if __name__ == "__main__":

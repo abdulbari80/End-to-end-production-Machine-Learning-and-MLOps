@@ -29,13 +29,13 @@ class ModelTrainerConfig:
     model_name: str
     train_array_path: Path
     test_array_path: Path
+    grid_result: str
 
 @dataclass(frozen=True)
 class ModelEvaluationConfig:
     root_dir: Path
     test_data_path: Path
-    model_path: Path
-    all_params: dict
-    metric_file_name: Path
-    target_column: str
-    mlflow_uri: str
+    grid_result_path: Path
+    model_name: str
+    metric_file_name: str
+    mlflow_uri: Path

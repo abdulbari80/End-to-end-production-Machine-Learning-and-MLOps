@@ -61,8 +61,21 @@ class ConfigurationManager:
             root_dir=config.root_dir,
             model_name=config.model_name,
             train_array_path=config.train_array_path,
-            test_array_path=config.test_array_path
-            )
+            test_array_path=config.test_array_path,
+            grid_result=config.grid_result)
         
         return model_train_config_obj
 
+    def get_model_evaluation_config(self) -> ModelEvaluationConfig:
+        config = self.config.model_evaluation
+    
+        create_directory([config.root_dir])
+        model_eval_config_obj = ModelEvaluationConfig(
+            root_dir=config.root_dir,
+            test_data_path=config.test_data_path,
+            grid_result_path=config.grid_result_path,
+            model_name=config.model_name,
+            metric_file_name=config.metric_file_name,
+            mlflow_uri="http://127.0.0.1:5000")
+        
+        return model_eval_config_obj

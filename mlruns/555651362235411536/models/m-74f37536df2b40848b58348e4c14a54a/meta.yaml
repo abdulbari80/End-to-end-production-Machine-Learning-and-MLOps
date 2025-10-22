@@ -1,0 +1,10 @@
+artifact_location: file:///c:/my-ml-project/aws/mlruns/555651362235411536/models/m-74f37536df2b40848b58348e4c14a54a/artifacts
+creation_timestamp: 1761025671885
+experiment_id: '555651362235411536'
+last_updated_timestamp: 1761025678787
+model_id: m-74f37536df2b40848b58348e4c14a54a
+model_type: ''
+name: Elastic Net
+source_run_id: 63fa2f839d434df8ad8418c5104f3a2d
+status: 2
+status_message: null

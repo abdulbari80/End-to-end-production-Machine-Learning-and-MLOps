@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/my-ml-project/aws/mlruns/555651362235411536/383941d61cfc4971aaf056606cf1b5cc/artifacts
+end_time: 1761118552082
+entry_point_name: ''
+experiment_id: '555651362235411536'
+lifecycle_stage: active
+run_id: 383941d61cfc4971aaf056606cf1b5cc
+run_name: Ridgev_3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761118546733
+status: 3
+tags: []
+user_id: abdul

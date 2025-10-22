@@ -1,0 +1,10 @@
+artifact_location: file:///c:/my-ml-project/aws/mlruns/555651362235411536/models/m-83d0a51f8c4946c89f564da03c2daae8/artifacts
+creation_timestamp: 1761116194680
+experiment_id: '555651362235411536'
+last_updated_timestamp: 1761116202187
+model_id: m-83d0a51f8c4946c89f564da03c2daae8
+model_type: ''
+name: ElasticNetv_3
+source_run_id: 9b715296519a40d6ae96bded389ab97b
+status: 2
+status_message: null

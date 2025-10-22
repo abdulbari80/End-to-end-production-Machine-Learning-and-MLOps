@@ -1,0 +1,6 @@
+artifact_location: file:///c:/my-ml-project/aws/mlruns/555651362235411536
+creation_time: 1760958975875
+experiment_id: '555651362235411536'
+last_update_time: 1760958975875
+lifecycle_stage: active
+name: DS Salaries

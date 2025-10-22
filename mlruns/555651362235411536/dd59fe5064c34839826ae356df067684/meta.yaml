@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/my-ml-project/aws/mlruns/555651362235411536/dd59fe5064c34839826ae356df067684/artifacts
+deleted_time: 1760999196237
+end_time: 1760998980812
+entry_point_name: ''
+experiment_id: '555651362235411536'
+lifecycle_stage: deleted
+run_id: dd59fe5064c34839826ae356df067684
+run_name: first run
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1760998980573
+status: 4
+tags: []
+user_id: abdul

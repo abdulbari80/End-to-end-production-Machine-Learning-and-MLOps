@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/my-ml-project/aws/mlruns/555651362235411536/9b7bf678cb774364bd7c0d28073ae546/artifacts
+deleted_time: 1761022411503
+end_time: 1761022210082
+entry_point_name: ''
+experiment_id: '555651362235411536'
+lifecycle_stage: deleted
+run_id: 9b7bf678cb774364bd7c0d28073ae546
+run_name: Elastic Net
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761022209948
+status: 4
+tags: []
+user_id: abdul

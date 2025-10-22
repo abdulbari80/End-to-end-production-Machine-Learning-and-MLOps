@@ -1,0 +1,10 @@
+artifact_location: file:///c:/my-ml-project/aws/mlruns/555651362235411536/models/m-fcdb1168b2a243468e6815dcaef77388/artifacts
+creation_timestamp: 1761098827837
+experiment_id: '555651362235411536'
+last_updated_timestamp: 1761098833351
+model_id: m-fcdb1168b2a243468e6815dcaef77388
+model_type: ''
+name: Ridgev_2
+source_run_id: 386fe34aee1144dca228a4c05dd0c5bb
+status: 2
+status_message: null

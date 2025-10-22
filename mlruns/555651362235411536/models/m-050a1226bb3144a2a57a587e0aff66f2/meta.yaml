@@ -1,0 +1,10 @@
+artifact_location: file:///c:/my-ml-project/aws/mlruns/555651362235411536/models/m-050a1226bb3144a2a57a587e0aff66f2/artifacts
+creation_timestamp: 1761025685569
+experiment_id: '555651362235411536'
+last_updated_timestamp: 1761025692062
+model_id: m-050a1226bb3144a2a57a587e0aff66f2
+model_type: ''
+name: Ridge
+source_run_id: be36b5c749704b6aa8a6eb861e631990
+status: 2
+status_message: null

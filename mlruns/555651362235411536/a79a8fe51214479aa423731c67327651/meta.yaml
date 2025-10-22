@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/my-ml-project/aws/mlruns/555651362235411536/a79a8fe51214479aa423731c67327651/artifacts
+end_time: 1761098839047
+entry_point_name: ''
+experiment_id: '555651362235411536'
+lifecycle_stage: active
+run_id: a79a8fe51214479aa423731c67327651
+run_name: Lassov_2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761098833429
+status: 3
+tags: []
+user_id: abdul

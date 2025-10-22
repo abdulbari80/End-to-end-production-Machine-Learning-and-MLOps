@@ -1,0 +1,10 @@
+artifact_location: file:///c:/my-ml-project/aws/mlruns/555651362235411536/models/m-44fc44f1241849239f3f5ef63e35dfc7/artifacts
+creation_timestamp: 1761118552616
+experiment_id: '555651362235411536'
+last_updated_timestamp: 1761118558558
+model_id: m-44fc44f1241849239f3f5ef63e35dfc7
+model_type: ''
+name: Lassov_3
+source_run_id: 96043b9279b94089b11854c20d35d0b2
+status: 2
+status_message: null

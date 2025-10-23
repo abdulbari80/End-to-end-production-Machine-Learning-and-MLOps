@@ -5,14 +5,16 @@ from src.mlproject.entity.config_entity import(DataIngestionConfig,
                                                DataValidationConfig,
                                                DataTransformationConfig,
                                                ModelTrainerConfig,
-                                               ModelEvaluationConfig)
+                                               ModelEvaluationConfig,
+                                               UnitTestConfig)
 
 class ConfigurationManager:
+    """This configures path to access .yaml files and create/ access artifacts"""
     def __init__(
             self,
-            config_path = CONFIG_FILE_PATH,
-            params_path = SCHEMA_FILE_PATH,
-            schema_path = PARAMS_FILE_PATH):
+            config_path = Path("config/config.yaml"),
+            params_path = Path("params.yaml"),
+            schema_path = Path("schema.yaml")):
         
         self.config = read_yaml(config_path)
         self.params = read_yaml(params_path)
@@ -79,3 +81,14 @@ class ConfigurationManager:
             mlflow_uri="http://127.0.0.1:5000")
         
         return model_eval_config_obj
+    
+    def get_unit_test_config(self) -> UnitTestConfig:
+        config = self.config.unit_test
+        unit_test_config_obj = UnitTestConfig(
+            data_transform_obj_path=config.data_transform_obj_path,
+            train_arrary_path=config.train_arrary_path,
+            test_array_path=config.test_array_path,
+            training_result_path=config.training_result_path,
+            prod_model_path=config.prod_model_path)
+        
+        return unit_test_config_obj

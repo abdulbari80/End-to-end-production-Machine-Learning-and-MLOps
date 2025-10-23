@@ -1,4 +1,5 @@
 import joblib
+import os
 from sklearn.metrics import (r2_score, mean_absolute_error, 
                              root_mean_squared_error)
 
@@ -32,9 +33,9 @@ class ModelEvaluation():
             # Re-rank models based on test results for MAE score
             test_results = sorted(results, key=lambda x: x[1][1][0])
             # save best model for deploymnet
-            champ_model = test_results[0]
-            joblib.dump(champ_model, self.config.model_name)
-            logging.info(f"Champion Model: {champ_model[0]}, MAE:{champ_model[1][1][0]}")
+            top_model = test_results[0][1][0]
+            joblib.dump(top_model, os.path.join(self.config.root_dir, self.config.model_name))
+            logging.info(f"Champion Model: {top_model} saved to {self.config.root_dir}")
             return results
         
         except BoxValueError as e:

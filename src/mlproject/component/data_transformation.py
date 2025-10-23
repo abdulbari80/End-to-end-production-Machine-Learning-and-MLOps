@@ -150,8 +150,8 @@ class DataTransformation:
             )
         # remote work ratio is converted from numeric to categorical
         df['remote_ratio'] = df['remote_ratio'].replace(
-            {'0': 'On site',
-             '50': 'Hybride',
+            {'0': 'On-site',
+             '50': 'Hybrid',
              '100': 'Remote'}
             )
         # Company size is mapped to full form
@@ -181,7 +181,7 @@ class DataTransformation:
             lambda x: 'Other' if x not in top_index else x)
         # Select top 9 categories in company_location and remaining in other category
         top_n = 9
-        top_n_index = df['company_location'].value_counts().nlargest(9).index
+        top_n_index = df['company_location'].value_counts().nlargest(top_n).index
         df['company_location_top'] = df['company_location'].apply(
             lambda x: 'Other' if x not in top_n_index else x)
         # Drop redundant or less relevant columns
@@ -209,7 +209,7 @@ class DataTransformation:
     
         return df_outlier_free
     
-    def get_col_transformer_pipeline(self):
+    def get_col_transformer_pipeline(self) -> ColumnTransformer:
         """This builds a pipeline to process data"""
         logging.info('Data transformation starts >>>>>')
         try:
@@ -262,17 +262,17 @@ class DataTransformation:
             y_train = df_train[target_variable]
             X_test = df_test.drop(columns=[target_variable], axis=1)
             y_test = df_test[target_variable]
-
+            # Instatiate column transformer class
             column_transormer_pipeline = self.get_col_transformer_pipeline()
-            logging.info("column transformer is intantiated")
             X_train_arr = column_transormer_pipeline.fit_transform(X_train)
             X_test_arr = column_transormer_pipeline.transform(X_test)
             logging.info("Data columns are transformed")
-            train_arr = np.c_[X_train_arr, np.array(y_train)]
-            test_arr = np.c_[X_test_arr, np.array(y_test)]
             joblib.dump(column_transormer_pipeline, 
                         os.path.join(self.config.root_dir, 
                                      self.config.data_transform_obj_name))
+            logging.info(f"Custom column transformer saved to {self.config.root_dir}")
+            train_arr = np.c_[X_train_arr, np.array(y_train)]
+            test_arr = np.c_[X_test_arr, np.array(y_test)]
             joblib.dump(train_arr, os.path.join(self.config.root_dir, 
                                                 self.config.train_array))
             joblib.dump(test_arr, os.path.join(self.config.root_dir, 

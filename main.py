@@ -30,7 +30,6 @@ def main():
     data_transform_obj.transform_data()
     logging.info(f">>>>> {STEP_3} finished!")
     
-    
     # Trigger model training
     logging.info(f"{STEP_4} starts >>>>>")
     ModelTrainingPipeline().train_models()
@@ -39,6 +38,6 @@ def main():
 
     # Trigger model evaluation
     ModelEvalPipeline().evaluate_model()
-    
+
 if __name__ == '__main__':
     main()

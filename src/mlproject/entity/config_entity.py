@@ -39,3 +39,11 @@ class ModelEvaluationConfig:
     model_name: str
     metric_file_name: str
     mlflow_uri: Path
+
+@dataclass(frozen=True)
+class UnitTestConfig:
+    data_transform_obj_path: Path
+    train_arrary_path: Path
+    test_array_path: Path
+    training_result_path: Path
+    prod_model_path: Path

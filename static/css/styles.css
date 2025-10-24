@@ -1,89 +1,147 @@
 /* Reset some default styling */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f4f7f6;
-    margin: 0;
+    background: linear-gradient(120deg, #f4f7f6, #e0f0ff); /* subtle AI tech feel */
     padding: 20px;
     color: #333;
 }
 
+/* Container styling */
 .container {
     max-width: 600px;
     margin: 0 auto;
     background: #fff;
     padding: 25px 30px;
-    border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
 }
 
-h1 {
+/* Eye-inspired ASCII logo */
+.logo {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2.2rem;
+    color: #6C63FF;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 5px; /* reduce space between logo and subtitle */
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 6px #6C63FF, 0 0 14px #A1C6FF;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px; /* reduced from 30px */
     font-weight: 700;
     color: #222;
 }
 
+/* Form styling */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 label {
     display: block;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     color: #444;
 }
 
+/* Select input styling */
 select {
     width: 100%;
     padding: 10px 12px;
-    border: 1.8px solid #ccc;
-    border-radius: 6px;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
+    color: #555; /* greyish font */
+    background-color: #f9f9f9; /* subtle background */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 select:focus {
-    border-color: #007bff;
+    border-color: #6C63FF;
     outline: none;
+    box-shadow: 0 0 8px rgba(108, 99, 255, 0.2);
+    background-color: #fff;
 }
 
+/* Button styling */
 .btn {
     width: 100%;
-    background-color: #007bff;
+    background: linear-gradient(90deg, #6C63FF, #A1C6FF);
     border: none;
-    padding: 15px 0;
+    padding: 14px 0;
     color: white;
     font-size: 1.1rem;
     font-weight: 700;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(108, 99, 255, 0.35);
 }
 
+/* Result block */
 .result {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: #e9f7fc;
-    border-radius: 6px;
-    font-size: 1.25rem;
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #e0f0ff; /* subtle AI/tech tone */
+    border-radius: 8px;
+    font-size: 1.15rem; /* slightly smaller */
     font-weight: 600;
     text-align: center;
     color: #00506b;
+    transition: transform 0.3s ease;
+}
+
+.result:hover {
+    transform: scale(1.02);
 }
 
 .result label {
     font-weight: 700;
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+}
+
+/* Subtle background graphics */
+.container::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(108, 99, 255, 0.15), transparent);
+    top: -50px;
+    right: -50px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.container::after {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(161, 198, 255, 0.15), transparent);
+    bottom: -40px;
+    left: -30px;
+    border-radius: 50%;
+    pointer-events: none;
 }
 
 /* Responsive for mobile */
@@ -93,5 +151,11 @@ select:focus {
     }
     .container {
         padding: 20px 15px;
+    }
+    .logo {
+        font-size: 1.8rem;
+    }
+    .btn {
+        padding: 12px 0;
     }
 }

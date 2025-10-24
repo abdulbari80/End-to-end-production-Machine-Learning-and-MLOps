@@ -19,10 +19,10 @@ def predict():
         )
         result = user_input.get_prediction()
         if result < 6021:
-            return render_template('index.html', results=f"Too low prediction.\nPlz check input combination.")  
+            return render_template('index.html', results=f"Sorry, mate! It's too low. Plz check input combination.")  
         else:
             result = int(round(result/1000, 0))
-            return render_template('index.html', results=f"Folk, you deserve US$ {result}-K a year!")
+            return render_template('index.html', results=f"You deserve US$ {result}K a year, Mate!")
 
     # GET request
     return render_template('index.html', results=None)

@@ -12,13 +12,9 @@ class ConfigurationManager:
     """This configures path to access .yaml files and create/ access artifacts"""
     def __init__(
             self,
-            config_path = Path("config/config.yaml"),
-            params_path = Path("params.yaml"),
-            schema_path = Path("schema.yaml")):
+            config_path = Path("config/config.yaml")):
         
         self.config = read_yaml(config_path)
-        self.params = read_yaml(params_path)
-        self.schema = read_yaml(schema_path)
 
         create_directory([self.config.artifacts_root])
 

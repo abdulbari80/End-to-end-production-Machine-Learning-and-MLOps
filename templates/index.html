@@ -3,75 +3,21 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI Predicted Salary</title>
+    <title>AI MABAN - Salary Predictor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
 </head>
 <body>
     <div class="container">
+        <!-- Logo -->
+        <pre class="logo">(•_•) MABAN</pre>
+        <h3>My little AI buddy</h3>
 
-        <!-- Eye-inspired ASCII logo -->
-        <pre class="logo">(•_•)MABAN</pre>
-        <h2>My AI Buddy</h2>
-
+        <!-- Form -->
         <form action="{{ url_for('predict_user_salary') }}" method="POST" id="prediction-form">
-
             <div class="form-group">
-                <label for="work_year">Work Year</label>
-                <select id="work_year" name="work_year" required>
-                    <option value="" disabled selected>Select a year</option>
-                    <option value="2020">2020</option>
-                    <option value="2021">2021</option>
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="experience_level">Your level of experience</label>
-                <select id="experience_level" name="experience_level" required>
-                    <option value="" disabled selected>Choose your level</option>
-                    <option value="Entry level">Entry-level</option>
-                    <option value="Mid/Intermediate level">Mid-level</option>
-                    <option value="Senior">Senior</option>
-                    <option value="Executive level">Executive</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="employment_type">Employment Type</label>
-                <select id="employment_type" name="employment_type" required>
-                    <option value="" disabled selected>Select your category</option>
-                    <option value="Full-time">Full-time</option>
-                    <option value="Part-time">Part-time</option>
-                    <option value="Contractor">Contractor</option>
-                    <option value="Freelancer">Freelancer</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="remote_ratio">Remote/ Hybrid/ On-site</label>
-                <select id="remote_ratio" name="remote_ratio" required>
-                    <option value="" disabled selected>Pick a category</option>
-                    <option value="Hybrid">Hybrid</option>
-                    <option value="On-site">On-site</option>
-                    <option value="Remote">Remote</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="company_size">Company Size</label>
-                <select id="company_size" name="company_size" required>
-                    <option value="" disabled selected>Choose size</option>
-                    <option value="Large">Large</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Small">Small</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="job_category">Job Category</label>
+                <label for="job_category">Job Role</label>
                 <select id="job_category" name="job_category" required>
-                    <option value="" disabled selected>Select your category</option>
+                    <option value="" disabled selected>Select your role</option>
                     <option value="AI Engineer">AI Engineer</option>
                     <option value="AI/ML Researcher">AI/ML Researcher</option>
                     <option value="BI Analyst">BI Analyst</option>
@@ -86,24 +32,51 @@
             </div>
 
             <div class="form-group">
-                <label for="employee_residence_top">Your Residence</label>
-                <select id="employee_residence_top" name="employee_residence" required>
-                    <option value="" disabled selected>Select a country</option>
-                    <option value="United States">United States</option>
-                    <option value="United Kingdom">United Kingdom</option>
-                    <option value="Canada">Canada</option>
-                    <option value="France">France</option>
-                    <option value="Germany">Germany</option>
-                    <option value="India">India</option>
-                    <option value="Spain">Spain</option>
-                    <option value="Other">Other</option>
+                <label for="experience_level">Experience</label>
+                <select id="experience_level" name="experience_level" required>
+                    <option value="" disabled selected>Choose your level</option>
+                    <option value="Entry level">Entry level</option>
+                    <option value="Mid/Intermediate level">Mid level</option>
+                    <option value="Senior">Senior</option>
+                    <option value="Executive level">Executive</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="company_location_top">Your Company Location</label>
+                <label for="employment_type">Employment Nature</label>
+                <select id="employment_type" name="employment_type" required>
+                    <option value="" disabled selected>Pick your category</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contractor">Contract</option>
+                    <option value="Freelancer">Freelancer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="remote_ratio">Office Attendance</label>
+                <select id="remote_ratio" name="remote_ratio" required>
+                    <option value="" disabled selected>Pick a mode</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Remote">Remote</option>
+                    <option value="On-site">On-site</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="company_size">Company Size</label>
+                <select id="company_size" name="company_size" required>
+                    <option value="" disabled selected>Choose a size</option>
+                    <option value="Large">Large</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Small">Small</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="company_location_top">Company Location</label>
                 <select id="company_location_top" name="company_location" required>
-                    <option value="" disabled selected>Select a location</option>
+                    <option value="" disabled selected>Select a country</option>
                     <option value="Australia">Australia</option>
                     <option value="United States">United States</option>
                     <option value="United Kingdom">United Kingdom</option>
@@ -117,7 +90,28 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn">Hello Maban, do you know my salary?</button>
+            <div class="form-group">
+                <label for="employee_residence_top">Your Residence</label>
+                <select id="employee_residence_top" name="employee_residence" required>
+                    <option value="" disabled selected>Select a country</option>
+                    <option value="Australia">Australia</option>
+                    <option value="United States">United States</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="Canada">Canada</option>
+                    <option value="France">France</option>
+                    <option value="Germany">Germany</option>
+                    <option value="India">India</option>
+                    <option value="Spain">Spain</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <!-- Hidden input for reCAPTCHA -->
+            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+
+            <button type="submit" class="btn" onclick="handleSubmit(event)">
+                Hey Maban, what's my salary?
+            </button>
         </form>
 
         {% if results %}
@@ -127,6 +121,27 @@
         {% endif %}
     </div>
 
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault(); // stop form from submitting immediately
+            grecaptcha.ready(function() {
+                grecaptcha.execute('{{ site_key }}', {action: 'submit'}).then(function(token) {
+                    document.getElementById('g-recaptcha-response').value = token;
+                    document.getElementById('prediction-form').submit();
+                });
+            });
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="acknowledgment">
+        <p>
+            We acknowledge the Traditional Owners of the lands in Australia on which we work and live,  
+            and pay our respects to Elders past, present and emerging.  
+            We honour their continuing connection to Country, culture and community.
+        </p>
+    </footer>
 </body>
 </html>

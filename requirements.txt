@@ -17,4 +17,5 @@ feature-engine
 pycountry -q
 category-encoders
 feature-engine
+python-dotenv
 -e .

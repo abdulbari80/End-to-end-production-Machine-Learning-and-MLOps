@@ -1,11 +1,9 @@
 import joblib
 import pandas as pd
 from src.mlproject.config.configuration import ConfigurationManager
-from pathlib import Path
 
 class Prediction:
     def __init__(self,
-                 work_year: str,
                  experience_level: str,
                  employment_type: str,
                  remote_ratio: str,
@@ -14,7 +12,7 @@ class Prediction:
                  employee_residence: str,
                  company_location: str
                  ):
-        self.work_year = work_year
+
         self.experience_level = experience_level
         self.employment_type = employment_type
         self.remote_ratio = remote_ratio
@@ -26,7 +24,6 @@ class Prediction:
     def get_prediction(self):
         config = ConfigurationManager().get_unit_test_config()
         user_input = {
-            'work_year' : self.work_year,
             'experience_level' : self.experience_level,
             'employment_type' : self.employment_type,
             'remote_ratio' : self.remote_ratio,

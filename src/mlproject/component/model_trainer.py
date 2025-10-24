@@ -123,7 +123,7 @@ class ModelTrainer:
             joblib.dump(best_model, os.path.join(self.config.root_dir, 
                                                  self.config.model_name))
             logging.info("Best model saved in the artifacts!")
-            logging.info(f"Best model: {best_model[0]}, mae: {best_model[1][1]}")
+            logging.info(f"Best model: {best_model[0]}, r2: {best_model[1][1]}")
 
         except BoxValueError as e:
             logging.error(f"Error: {e}")

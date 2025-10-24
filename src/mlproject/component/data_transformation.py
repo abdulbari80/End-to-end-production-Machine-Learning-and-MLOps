@@ -169,32 +169,31 @@ class DataTransformation:
         # Country codes are mapped to country names
         df['company_location'] = df['company_location'].apply(self.country_code_to_name)
         df['employee_residence'] = df['employee_residence'].apply(self.country_code_to_name)
-        
         df['inflation_adj_salary'] = df.apply(self.adjust_salary, axis=1)
-        df['work_year'] = df['work_year'].astype('category')
+
+        # this columns is planned to dro
+        #df['work_year'] = df['work_year'].astype('category')
 
         # Put rare countries in 'employee_residency' into 'other' category
-        theshold = 25
-        val_count =  df['employee_residence'].value_counts()
-        top_index = val_count[val_count > theshold].index
+        threshold = 30
+        val_count = df['employee_residence'].value_counts()
+        top_index = val_count[val_count > threshold].index
         df['employee_residence_top'] = df['employee_residence'].apply(
-            lambda x: 'Other' if x not in top_index else x)
+        lambda x: x if x in top_index or x == 'Australia' else 'Other')
+
         # Select top 9 categories in company_location and remaining in other category
         top_n = 9
         top_n_index = df['company_location'].value_counts().nlargest(top_n).index
         df['company_location_top'] = df['company_location'].apply(
             lambda x: 'Other' if x not in top_n_index else x)
         # Drop redundant or less relevant columns
-        cols_to_drop = ['job_title', 'salary', 'salary_currency',
-                        'salary_in_usd', 'employee_residence',
-                        'company_location']
+        cols_to_drop = ['work_year', 'job_title', 'salary', 'salary_currency',
+                        'salary_in_usd', 'employee_residence', 'company_location']
         cols_df = df.columns.to_list()
         final_cols_to_drop = []
         for col in cols_to_drop:
               if col in cols_df:
                     final_cols_to_drop.append(col)
-        logging.info(f"columns available: {cols_df}")
-        logging.info(f"columns to drop: {final_cols_to_drop}")
         df_tr = df.drop(columns = final_cols_to_drop,
                                    axis=1)
         # Many outliers observed in salary variable during EDA
@@ -214,8 +213,7 @@ class DataTransformation:
         logging.info('Data transformation starts >>>>>')
         try:
             #rare_cat_columns = []
-            cat_columns = ['work_year', 
-                           'experience_level', 
+            cat_columns = ['experience_level', 
                            'employment_type',
                            'remote_ratio', 
                            'company_size', 
@@ -232,7 +230,6 @@ class DataTransformation:
 
             trans_cols = ColumnTransformer(
                 [
-                    #('rare_cat_pipeline', rare_cat_pipeline, rare_cat_columns),
                     ('cat_pipeline', cat_pipeline, cat_columns)
                 ],
                 remainder='passthrough'
@@ -257,7 +254,11 @@ class DataTransformation:
             for data in dataset:
                 data[0].to_csv(os.path.join(self.config.root_dir, data[1]), 
                                index=False)
-            target_variable = 'inflation_adj_salary'
+            logging.info("dataset split into train and test sets and saved to artifacts")
+            if 'inflation_adj_salary' in df.columns.to_list():
+                target_variable = 'inflation_adj_salary'
+            else:
+                  logging.info("Sorry, assigned 'target variable not available")
             X_train = df_train.drop(columns=[target_variable], axis=1)
             y_train = df_train[target_variable]
             X_test = df_test.drop(columns=[target_variable], axis=1)

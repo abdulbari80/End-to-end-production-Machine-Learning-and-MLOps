@@ -58,21 +58,23 @@ class ModelEvaluation():
             mlflow.set_tracking_uri(uri=self.config.mlflow_uri)
 
             for element in results:
-                with mlflow.start_run(run_name=f"{element[0]}_v3"):
+                with mlflow.start_run(run_name=f"{element[0]}_v4"):
                     mlflow.log_params(param_mlflow[element[0]])
                     mlflow.log_metric('mae', element[1][1][0])
                     mlflow.log_metric('rmse', element[1][1][1])
                     mlflow.log_metric('r2_score', element[1][1][2])
                     if 'XGB' in element[0]: 
-                        mlflow.xgboost.log_model(element[1][0], f"{element[0]}_v3")
+                        mlflow.xgboost.log_model(element[1][0], f"{element[0]}_v4")
                     else:                                           
-                        mlflow.sklearn.log_model(element[1][0], f"{element[0]}_v3")
+                        mlflow.sklearn.log_model(element[1][0], f"{element[0]}_v4")
+                """
                 # Register the champion model wity MLflow
                 model_name = "ElasticNetv_3"
                 run_id = "9b715296519a40d6ae96bded389ab97b"
                 model_uri = f"runs:/{run_id}/{model_name}"
                 results = mlflow.register_model(model_uri=model_uri, 
                                                 name="ElasticNet")
+                """
         except BoxValueError as e:
             logging.error(f"Error: {e}")
 

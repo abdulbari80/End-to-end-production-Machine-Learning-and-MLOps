@@ -6,15 +6,10 @@ data_ingestion:
   local_data_file: artifacts/data_ingestion/data2.zip
   unzip_dir: artifacts/data_ingestion
 
-data_validation:
-  root_dir: artifacts/data_validation
-  unzip_data_dir: artifacts/data_ingestion/ds_salaries.csv
-  STATUS_FILE: artifacts/data_validation/status.txt
-
 data_transformation:
   root_dir: artifacts/data_transformation
   data_path: artifacts/data_ingestion/ds_salaries.csv
-  data_transform_obj_name: data_trans_obj_v1.0.joblib
+  data_transform_obj_name: data_trans_obj_v1.1.joblib
   train_array: train_array.joblib
   test_array: test_array.joblib
 
@@ -22,21 +17,21 @@ model_trainer:
   root_dir: artifacts/model_trainer
   train_array_path: artifacts/data_transformation/train_array.joblib
   test_array_path: artifacts/data_transformation/test_array.joblib
-  model_name: model_v1.0.joblib
+  model_name: model_v1.1.joblib
   grid_result: top_3_model_results.joblib
 
 model_evaluation:
   root_dir: artifacts/model_evaluation
   test_data_path: artifacts/data_transformation/test_array.joblib
   grid_result_path: artifacts/model_trainer/top_3_model_results.joblib
-  model_name: model_v1.0.joblib
+  model_name: model_v1.1.joblib
   metric_file_name: resuslt_metrics.joblib
 
 unit_test:
-  data_transform_obj_path: artifacts/data_transformation/data_trans_obj_v1.0.joblib
+  data_transform_obj_path: artifacts/data_transformation/data_trans_obj_v1.1.joblib
   train_arrary_path: artifacts/data_transformation/train_array.joblib
   test_array_path: artifacts/data_transformation/test_array.joblib
   training_result_path: artifacts/model_trainer/top_3_model_results.joblib
-  prod_model_path: artifacts/model_evaluation/model_v1.0.joblib
+  prod_model_path: artifacts/model_evaluation/model_v1.1.joblib
 
 

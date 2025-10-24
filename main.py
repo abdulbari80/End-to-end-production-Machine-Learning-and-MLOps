@@ -1,5 +1,4 @@
 from src.mlproject.pipeline.data_ingestion_pipeline import DataIngestionPipeline
-from src.mlproject.pipeline.data_validation_pipeline import DataValidationPipeline
 from src.mlproject.pipeline.data_transformation_pipeline import DataTransformationPipeline
 from src.mlproject.pipeline.model_training_pipeline import ModelTrainingPipeline
 from src.mlproject.pipeline.model_evaluation_pipeline import ModelEvalPipeline
@@ -7,10 +6,9 @@ from src.mlproject.pipeline.model_evaluation_pipeline import ModelEvalPipeline
 from src.mlproject import logging
 
 STEP_1 = "Data Ingestion"
-STEP_2 = "Data Validation"
-STEP_3 = "Data Transformation"
-STEP_4 = "Model Training"
-STEP_5 = "Model Evaluation"
+STEP_2 = "Data Transformation"
+STEP_3 = "Model Training"
+STEP_4 = "Model Evaluation"
 
 def main():
     """
@@ -18,24 +16,19 @@ def main():
     logging.info(f"{STEP_1} starts >>>>>")
     DataIngestionPipeline().ingest_data()
     logging.info(">>>>> f{STEP_1} finished!")
-
-    # Triggers data vaidation
-    logging.info(f"{STEP_2} starts >>>>>")
-    DataValidationPipeline().validate_column()
-    logging.info(">>>>> f{STEP_2} finished!")
     
     # Triggers data transformation
-    logging.info(f"{STEP_3} starts >>>>>")
+    logging.info(f"{STEP_2} starts >>>>>")
     data_transform_obj = DataTransformationPipeline()
     data_transform_obj.transform_data()
-    logging.info(f">>>>> {STEP_3} finished!")
+    logging.info(f">>>>> {STEP_2} finished!")
     
     # Trigger model training
-    logging.info(f"{STEP_4} starts >>>>>")
+    logging.info(f"{STEP_3} starts >>>>>")
     ModelTrainingPipeline().train_models()
-    logging.info(f">>>>> {STEP_4} finished!")
-    """
-
+    logging.info(f">>>>> {STEP_3} finished!")
+    
+"""
     # Trigger model evaluation
     ModelEvalPipeline().evaluate_model()
 

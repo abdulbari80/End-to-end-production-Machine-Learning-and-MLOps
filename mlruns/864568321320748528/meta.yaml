@@ -1,0 +1,6 @@
+artifact_location: file:///C:/my-ml-project/aws/mlruns/864568321320748528
+creation_time: 1761296597740
+experiment_id: '864568321320748528'
+last_update_time: 1761296597740
+lifecycle_stage: active
+name: Salary Prediction

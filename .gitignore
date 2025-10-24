@@ -19,7 +19,6 @@ ENV/
 # Logs and outputs
 logs/
 *.log
-mlruns/
 notebook/
 chatboost_info/
 artifacts/*.csv
@@ -28,8 +27,8 @@ artifacts/*.parquet
 
 # Keep only production-ready models
 artifacts/*
-!artifacts/model.joblib
-!artifacts/preprocessor.joblib
+!artifacts/data_transformation/data_trans_obj_v1.1.joblib
+!artifacts/model_evaluation/model_v1.1.joblib
 
 # Configs and secrets
 .env
@@ -46,6 +45,7 @@ tests/__pycache__/
 # Build / Packaging
 build/
 dist/
+catboost_info/
 *.egg-info/
 *.egg
 

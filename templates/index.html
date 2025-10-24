@@ -4,12 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AI MABAN - Salary Predictor</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
 </head>
 <body>
     <div class="container">
-        <!-- Logo -->
-        <pre class="logo">(•_•) MABAN</pre>
+        <!-- Logo and Header -->
+        <pre class="logo">(•‿•)</pre>
+        <h1 class="brand-name">Maban</h1>
         <h3>My little AI buddy</h3>
 
         <!-- Form -->
@@ -75,7 +78,7 @@
 
             <div class="form-group">
                 <label for="company_location_top">Company Location</label>
-                <select id="company_location_top" name="company_location" required>
+                <select id="company_location_top" name="company_location_top" required>
                     <option value="" disabled selected>Select a country</option>
                     <option value="Australia">Australia</option>
                     <option value="United States">United States</option>
@@ -92,7 +95,7 @@
 
             <div class="form-group">
                 <label for="employee_residence_top">Your Residence</label>
-                <select id="employee_residence_top" name="employee_residence" required>
+                <select id="employee_residence_top" name="employee_residence_top" required>
                     <option value="" disabled selected>Select a country</option>
                     <option value="Australia">Australia</option>
                     <option value="United States">United States</option>
@@ -106,7 +109,6 @@
                 </select>
             </div>
 
-            <!-- Hidden input for reCAPTCHA -->
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
 
             <button type="submit" class="btn" onclick="handleSubmit(event)">
@@ -114,34 +116,35 @@
             </button>
         </form>
 
+        <!-- Prediction Result -->
         {% if results %}
         <div class="result">
-            <p>{{ results }}</p>
+            <p>{{ results|safe }}</p>
         </div>
         {% endif %}
-    </div>
 
-    <!-- Google reCAPTCHA -->
-    <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
-    <script>
-        function handleSubmit(event) {
-            event.preventDefault(); // stop form from submitting immediately
-            grecaptcha.ready(function() {
-                grecaptcha.execute('{{ site_key }}', {action: 'submit'}).then(function(token) {
-                    document.getElementById('g-recaptcha-response').value = token;
-                    document.getElementById('prediction-form').submit();
+        <!-- reCAPTCHA Script -->
+        <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
+        <script>
+            function handleSubmit(event) {
+                event.preventDefault();
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('{{ site_key }}', {action: 'submit'}).then(function(token) {
+                        document.getElementById('g-recaptcha-response').value = token;
+                        document.getElementById('prediction-form').submit();
+                    });
                 });
-            });
-        }
-    </script>
+            }
+        </script>
 
-    <!-- Footer -->
-    <footer class="acknowledgment">
-        <p>
-            We acknowledge the Traditional Owners of the lands in Australia on which we work and live,  
-            and pay our respects to Elders past, present and emerging.  
-            We honour their continuing connection to Country, culture and community.
-        </p>
-    </footer>
+        <!-- Footer -->
+        <footer class="acknowledgment">
+            <p>
+                We acknowledge the Traditional Owners of the lands in Australia on which we work and live,
+                and pay our respects to Elders past, present and emerging.
+                We honour their continuing connection to Country, culture and community.
+            </p>
+        </footer>
+    </div>
 </body>
 </html>

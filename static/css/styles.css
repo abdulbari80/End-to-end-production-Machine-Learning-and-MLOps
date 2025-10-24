@@ -1,3 +1,6 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Poppins:wght@400;600&display=swap');
+
 /* Reset & base */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -29,10 +32,10 @@ body::before {
 
 /* Container */
 .container {
-    max-width: 600px;
+    max-width: 580px;
     margin: 0 auto;
     background: #fff;
-    padding: 25px 30px;
+    padding: 25px 28px;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     position: relative;
@@ -41,7 +44,7 @@ body::before {
 /* Logo */
 .logo {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 2.5rem;
+    font-size: 2.0rem;
     color: #6C63FF;
     text-align: center;
     margin-bottom: 6px;
@@ -51,11 +54,26 @@ body::before {
     transform: scale(1.05);
     text-shadow: 0 0 6px #6C63FF, 0 0 14px #A1C6FF;
 }
+
+/* Brand title (Maban) */
+.brand-name {
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: #333;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+/* Subtitle */
 h3 {
+    font-family: 'Poppins', sans-serif;
     text-align: center;
     margin-bottom: 18px;
-    font-weight: 700;
-    color: #222;
+    font-weight: 500;
+    color: #555;
+    font-size: 1rem;
 }
 
 /* Form */
@@ -97,28 +115,41 @@ select:focus {
     box-shadow: 0 6px 15px rgba(108, 99, 255, 0.35);
 }
 
-/* Result */
+/* ====== Result Section (Updated with glow) ====== */
 .result {
-    margin-top: 25px;
-    padding: 14px;
-    background-color: #e0f0ff;
+    margin-top: 22px;
+    padding: 12px;
+    background: rgba(123, 97, 255, 0.08);
+    border: 1px solid rgba(123, 97, 255, 0.25);
     border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
     text-align: center;
-    color: #00506b;
-    transition: transform 0.3s ease;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #222;
+    transition: box-shadow 0.4s ease, transform 0.3s ease;
+    animation: glowPulse 4s ease-in-out infinite;
 }
-.result:hover { transform: scale(1.02); }
+
+/* Soft glowing pulse animation */
+@keyframes glowPulse {
+    0%, 100% {
+        box-shadow: 0 0 8px rgba(123, 97, 255, 0.3),
+                    0 0 20px rgba(108, 99, 255, 0.15);
+    }
+    50% {
+        box-shadow: 0 0 14px rgba(123, 97, 255, 0.45),
+                    0 0 28px rgba(108, 99, 255, 0.25);
+    }
+}
 
 /* Footer Acknowledgment */
 footer.acknowledgment {
-    margin-top: 40px;
+    margin-top: 35px;
     text-align: center;
     font-size: 0.85rem;
     color: #555;
     opacity: 0.85;
-    padding-top: 20px;
+    padding-top: 18px;
     border-top: 1px solid rgba(0,0,0,0.1);
 }
 footer.acknowledgment p {
@@ -136,5 +167,6 @@ footer.acknowledgment:hover {
     body { padding: 15px 10px; }
     .container { padding: 20px 15px; }
     .logo { font-size: 1.9rem; }
+    .brand-name { font-size: 1.8rem; }
     .btn { padding: 12px 0; }
 }

@@ -20,7 +20,7 @@ ENV/
 logs/
 *.log
 notebook/
-chatboost_info/
+catboost_info/
 artifacts/*.csv
 artifacts/*.xlsx
 artifacts/*.parquet

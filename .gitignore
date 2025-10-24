@@ -25,8 +25,11 @@ artifacts/*.csv
 artifacts/*.xlsx
 artifacts/*.parquet
 
-# Keep only production-ready models
+# Ignore everything in artifacts/
 artifacts/*
+
+# Keep only production-ready models
+!artifacts/**/
 !artifacts/data_transformation/data_trans_obj_v1.1.joblib
 !artifacts/model_evaluation/model_v1.1.joblib
 

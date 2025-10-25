@@ -1,18 +1,8 @@
 from flask import Flask, request, render_template
-import requests
 from prediction import Prediction
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
 
 application = Flask(__name__)
 app = application
-
-# reCAPTCHA keys
-RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY")
-RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY")
-
 
 @app.route("/", methods=["GET", "POST"], endpoint="predict_user_salary")
 def predict():
@@ -43,28 +33,11 @@ def predict():
             print(f"⚠️ Missing fields: {missing_fields}")
             return render_template(
                 "index.html",
-                site_key=RECAPTCHA_SITE_KEY,
+                #site_key=RECAPTCHA_SITE_KEY,
                 results="Please fill in all fields before asking Maban.",
             )
 
-        # Optional reCAPTCHA
-        token = form_data.get("g-recaptcha-response")
-        if token:
-            verify_url = "https://www.google.com/recaptcha/api/siteverify"
-            payload = {"secret": RECAPTCHA_SECRET_KEY, "response": token}
-            try:
-                response = requests.post(verify_url, data=payload)
-                result_json = response.json()
-                if not result_json.get("success"):
-                    print("❌ reCAPTCHA failed:", result_json)
-                    return render_template(
-                        "index.html",
-                        site_key=RECAPTCHA_SITE_KEY,
-                        results="Captcha verification failed. Please try again.",
-                    )
-            except Exception as e:
-                print("⚠️ reCAPTCHA error:", e)
-
+        
         # 🧠 Prediction
         try:
             predictor = Prediction(
@@ -102,12 +75,9 @@ def predict():
 
         return render_template(
             "index.html",
-            site_key=RECAPTCHA_SITE_KEY,
             results=message,
         )
 
-    return render_template("index.html", site_key=RECAPTCHA_SITE_KEY, results=None)
+    return render_template("index.html", results=None)
 
 
-if __name__ == "__main__":
-    app.run(debug=True, host="127.0.0.1", port=5000)

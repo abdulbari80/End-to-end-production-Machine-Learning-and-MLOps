@@ -1,21 +1,21 @@
+# Core dependencies
 numpy
 pandas
-mlflow==2.2.2
-notebook
-matplotlib
-seaborn
 scikit-learn
-ython-box==7.3.2
-pyYAML
-tqdm
-ensure==1.0.2
 joblib
-types-PyYAML
-Flask
-Flask-cors
 feature-engine
-pycountry -q
-category-encoders
-feature-engine
+
+# Flask web framework
+Flask==2.3.5
+Flask-Cors
+gunicorn==22.1.0
+
+# Configuration utilities
 python-dotenv
+python-box==7.3.2
+pyYAML
+types-PyYAML
+ensure==1.0.2
+
+# Local package (if setup.py exists)
 -e .

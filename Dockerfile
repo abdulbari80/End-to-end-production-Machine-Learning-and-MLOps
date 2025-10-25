@@ -1,23 +1,21 @@
-# Use Python 3.12 slim image
+# Use Python 3.12 slim
 FROM python:3.12.11-slim
 
 # Set working directory
 WORKDIR /app
 
-# Copy dependency files
-COPY requirements.txt setup.py ./
+# Copy only the files needed for dependencies
+COPY requirements.txt .
 
-# Install dependencies
+# Upgrade pip and install dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Copy all project files
+# Copy application code
 COPY . .
-COPY artifacts/ ./artifacts/
 
-# Expose port
+# Expose port (Flask default)
 EXPOSE 80
 
-# Start Gunicorn server
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app", "--workers", "1", "--timeout", "120"]
-
+# Run the app with gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]

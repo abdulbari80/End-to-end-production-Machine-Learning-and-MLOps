@@ -21,7 +21,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Python
+      # Step 2: Set up Python 3.12
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
@@ -36,13 +36,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # Step 4: Install dependencies (skip tests)
+      # Step 4: Install dependencies only (no pytest)
       - name: Install dependencies
         run: |
           set -euo pipefail
-          echo "Upgrading pip..."
           pip install --upgrade pip
-          echo "Installing dependencies..."
           pip install -r requirements.txt
 
       # Step 5: Log in to Azure
@@ -53,9 +51,7 @@ jobs:
 
       # Step 6: Log in to Azure Container Registry
       - name: Log in to Azure Container Registry
-        run: |
-          set -euo pipefail
-          az acr login --name ${{ env.ACR_NAME }}
+        run: az acr login --name ${{ env.ACR_NAME }}
 
       # Step 7: Build and push Docker image
       - name: Build and Push Docker Image to ACR
@@ -74,5 +70,4 @@ jobs:
       # Step 9: Logout of Azure (ignore errors)
       - name: Logout of Azure
         if: always()
-        run: |
-          az logout || echo "No active Azure session to log out."
+        run: az logout || echo "No active Azure session to log out."

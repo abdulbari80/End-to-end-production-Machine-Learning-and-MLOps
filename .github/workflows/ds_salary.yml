@@ -71,7 +71,9 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           images: ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.run_number }}
 
-      # Step 9: Logout of Azure
+      # Step 9: Logout of Azure (ignore errors)
       - name: Logout of Azure
         if: always()
-        run: az logout
+        run: |
+          az logout || true
+

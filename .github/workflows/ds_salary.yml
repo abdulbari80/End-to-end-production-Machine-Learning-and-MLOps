@@ -75,5 +75,6 @@ jobs:
       - name: Logout of Azure
         if: always()
         run: |
-          az logout || true
+          az logout || echo "No active Azure session to log out."
+
 

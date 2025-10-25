@@ -21,53 +21,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Python 3.12 (✅ ensure correct version)
+      # Step 2: Set up Python 3.12
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          check-latest: true
 
-      # Step 3: Install dependencies and run tests (no cache until confirmed working)
-      - name: Install dependencies and run tests
-        run: |
-          set -euo pipefail
-          echo "Upgrading pip..."
-          python --version
-          pip install --upgrade pip
-          echo "Installing dependencies..."
-          pip install -r requirements.txt
-          echo "Installing pytest..."
-          pip install pytest
-          echo "Running tests..."
-          pytest tests/ --maxfail=1 --disable-warnings -q
-
-      # Step 4: Azure login
-      - name: Azure Login
-        uses: azure/login@v2
+      # Step 3: Cache pip packages
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      # Step 5: Log in to ACR
-      - name: Log in to Azure Container Registry
-        run: |
-          az acr login --name ${{ env.ACR_NAME }}
-
-      # Step 6: Build and push Docker image
-      - name: Build and Push Docker Image to ACR
-        run: |
-          docker build -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.run_number }} .
-          docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.run_number }}
-
-      # Step 7: Deploy to Azure Web App
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          images: ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.run_number }}
-
-      # Step 8: Logout of Azure
-      - name: Logout of Azure
-        if: always()
-        run: |
-          az logout || echo "No active Azure session to log out."
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requ**

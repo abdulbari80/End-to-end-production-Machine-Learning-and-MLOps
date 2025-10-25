@@ -44,7 +44,7 @@ def predict():
             return render_template(
                 "index.html",
                 site_key=RECAPTCHA_SITE_KEY,
-                results="Please fill in all the fields before asking Maban for a prediction.",
+                results="Please fill in all fields before asking Maban.",
             )
 
         # Optional reCAPTCHA
@@ -93,7 +93,7 @@ def predict():
             result_value = 0
 
         if result_value < 6021:
-            message = "Hmm... that seems quite low. Please check your input combination."
+            message = "Hmm... that seems too low. Please check your input combination."
         else:
             salary_k = int(round(result_value / 1000, 0))
             message = (

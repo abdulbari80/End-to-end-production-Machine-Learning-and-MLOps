@@ -44,7 +44,7 @@ body::before {
 /* Logo */
 .logo {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 2.0rem;
+    font-size: 1.75rem;
     color: #6C63FF;
     text-align: center;
     margin-bottom: 6px;
@@ -170,3 +170,73 @@ footer.acknowledgment:hover {
     .brand-name { font-size: 1.8rem; }
     .btn { padding: 12px 0; }
 }
+
+/* === Refined AI Header (with side sparks) === */
+
+/* Centered logo (reduced width) */
+.logo {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.8rem;
+    color: #6C63FF;
+    text-align: center;
+    margin: 0 auto 4px;
+    width: fit-content;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+.logo:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 6px #6C63FF, 0 0 14px #A1C6FF;
+}
+
+/* Brand name with gold AI sparks */
+.brand-name {
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: #333;
+    letter-spacing: 1px;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Four-pointed glowing sparks */
+.brand-name::before,
+.brand-name::after {
+    content: '✦';
+    color: #FFD700;
+    font-size: 1.2rem;
+    opacity: 0.75;
+    text-shadow: 0 0 6px #FFD700, 0 0 12px rgba(255, 215, 0, 0.4);
+    animation: sparkFloat 6s ease-in-out infinite;
+    position: relative;
+    top: -1px;
+}
+
+.brand-name::before {
+    margin-right: 8px;
+    animation-delay: 1s;
+}
+
+.brand-name::after {
+    margin-left: 8px;
+    animation-delay: 3s;
+}
+
+/* Subtle neural glow line */
+.brand-name::after,
+.brand-name::before {
+    vertical-align: middle;
+}
+
+.brand-name::after {
+    animation: sparkFloat 6s ease-in-out infinite;
+}
+
+/* Soft glow animation */
+@keyframes sparkFloat {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.75; }
+    50% { transform: translateY(-3px) scale(1.15); opacity: 0.95; }
+}
+

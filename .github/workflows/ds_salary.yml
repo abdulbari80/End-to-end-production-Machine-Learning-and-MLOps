@@ -17,25 +17,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 🧩 Step 1: Checkout repository
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 🐍 Step 2: Set up Python
+      # Step 2: Set up Python 3.12 (✅ ensure correct version)
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          check-latest: true
 
-      # 🧾 Step 3: Show requirements for debugging
-      - name: Show requirements.txt content
-        run: cat requirements.txt
-
-      # ⚡ Step 4: Install dependencies and run tests
+      # Step 3: Install dependencies and run tests (no cache until confirmed working)
       - name: Install dependencies and run tests
         run: |
           set -euo pipefail
           echo "Upgrading pip..."
+          python --version
           pip install --upgrade pip
           echo "Installing dependencies..."
           pip install -r requirements.txt
@@ -44,36 +42,31 @@ jobs:
           echo "Running tests..."
           pytest tests/ --maxfail=1 --disable-warnings -q
 
-      # 🔐 Step 5: Azure Login
+      # Step 4: Azure login
       - name: Azure Login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # 🐳 Step 6: Log in to Azure Container Registry
+      # Step 5: Log in to ACR
       - name: Log in to Azure Container Registry
         run: |
-          set -euo pipefail
-          echo "Logging into Azure Container Registry..."
           az acr login --name ${{ env.ACR_NAME }}
 
-      # 🏗️ Step 7: Build and Push Docker Image to ACR
+      # Step 6: Build and push Docker image
       - name: Build and Push Docker Image to ACR
         run: |
-          set -euo pipefail
-          echo "Building Docker image..."
           docker build -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.run_number }} .
-          echo "Pushing Docker image to ACR..."
           docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.run_number }}
 
-      # 🚀 Step 8: Deploy to Azure Web App for Containers
+      # Step 7: Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           images: ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.run_number }}
 
-      # 🧹 Step 9: Logout of Azure (ignore missing session errors)
+      # Step 8: Logout of Azure
       - name: Logout of Azure
         if: always()
         run: |

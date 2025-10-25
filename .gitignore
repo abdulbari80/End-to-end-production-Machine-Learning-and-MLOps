@@ -51,7 +51,3 @@ dist/
 catboost_info/
 *.egg-info/
 *.egg
-
-# GitHub Actions and AWS related
-.aws/
-.aws-sam/

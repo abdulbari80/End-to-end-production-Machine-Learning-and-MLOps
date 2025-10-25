@@ -1,46 +1,29 @@
-# Python cache
+# Ignore Git and CI/CD files
+.git
+.github
+.gitignore
+
+# Environment files
+.env
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Virtual envs
-myenv/
-.venv/
-venv/
-env/
-ENV/
-
-# Git & CI/CD
-.git/
-.github/
-
-# Notebooks, logs, and experiments
+# Local/dev-only directories
+config/
 notebook/
 logs/
 mlruns/
-chatboost_info/
-
-# Tests (not needed for production)
+catboost_info/
 tests/
-
-# Local configs and secrets
-.env
-*.yaml
-*.json
-config/
-
-# Model artifacts (exclude all except final ones)
-artifacts/*
-!artifacts/data_transformation/data_trans_obj_v1.0.joblib
-!artifacts/mdoel_evaluation/model_v1.0.joblib
-
-# Ignore files not needed in runtime
-LICENSE
+src/
+main.py
+LISENCE
 README.md
-setup.py
 template.py
 
-# Build artifacts
-build/
-dist/
+# Ignore all artifacts except the required ones
+artifacts/*
+!artifacts/model_evaluation/model_v1.1.joblib
+!artifacts/data_transformation/data_trans_obj_v1.1.joblib

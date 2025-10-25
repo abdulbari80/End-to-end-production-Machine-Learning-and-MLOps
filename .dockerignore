@@ -20,7 +20,6 @@ tests/
 src/
 main.py
 LISENCE
-README.md
 template.py
 
 # Ignore all artifacts except the required ones

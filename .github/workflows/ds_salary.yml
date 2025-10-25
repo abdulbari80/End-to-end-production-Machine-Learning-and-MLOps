@@ -13,7 +13,7 @@ env:
   IMAGE_NAME: mlproject-salary
 
 jobs:
-  build-test-push-deploy:
+  build-push-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +21,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Python 3.12
+      # Step 2: Set up Python
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
@@ -32,4 +32,4 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requ**
+          key: ${{ runner.os }}-pip-${{ hashF

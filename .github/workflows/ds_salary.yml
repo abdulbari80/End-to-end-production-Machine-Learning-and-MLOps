@@ -22,10 +22,10 @@ jobs:
         uses: actions/checkout@v4
 
       # Step 2: Set up Python
-      - name: Set up Python 3.12
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12.11"
+          python-version: "3.11"
 
       # Step 3: Cache pip packages
       - name: Cache pip dependencies
@@ -36,7 +36,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # Step 4: Install dependencies and run tests
+      # Step 4: Install dependencies & run tests
       - name: Install dependencies and run tests
         run: |
           set -e

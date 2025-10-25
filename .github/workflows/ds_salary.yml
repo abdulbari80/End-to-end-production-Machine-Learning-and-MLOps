@@ -1,50 +1,36 @@
-name: Azure CI/CD - Flask App
+name: Build and Push Docker to ACR
 
 on:
   push:
     branches:
-      - main
-
-env:
-  AZURE_WEBAPP_NAME: mabanai
-  AZURE_RESOURCE_GROUP: mymlproject
-  AZURE_REGION: australiaeast
-  ACR_NAME: mabanai
-  IMAGE_NAME: mlproject-salary
+      - main  # Or the branch you want to trigger builds
 
 jobs:
-  build-push-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # 1. Checkout repo
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      # Azure login
-      - name: Azure Login
-        uses: azure/login@v2
+      # 2. Log in to Azure
+      - name: Log in to Azure
+        uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Log in to Azure Container Registry
+      # 3. Log in to Azure Container Registry
       - name: Log in to ACR
-        run: az acr login --name ${{ env.ACR_NAME }}
-
-      # Build and push Docker image
-      - name: Build and Push Docker Image
         run: |
-          docker build -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.run_number }} .
-          docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.run_number }}
+          az acr login --name mabanai-apfdgvgvfkc8g3b5
 
-      # Deploy to Azure Web App
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          images: ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.run_number }}
+      # 4. Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t mabanai-apfdgvgvfkc8g3b5.azurecr.io/mlproject-salary:latest .
 
-      # Logout Azure
-      - name: Logout Azure
-        if: always()
-        run: az logout || echo "No active Azure session to log out."
+      # 5. Push Docker image
+      - name: Push Docker image
+        run: |
+          docker push mabanai-apfdgvgvfkc8g3b5.azurecr.io/mlproject-salary:latest

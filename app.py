@@ -55,7 +55,6 @@ def predict():
             print("❌ Prediction error:", e)
             return render_template(
                 "index.html",
-                site_key=RECAPTCHA_SITE_KEY,
                 results=f"Error during prediction: {e}",
             )
 

@@ -14,13 +14,11 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy the rest of the application
 COPY . .
 
-# Expose port 80 for Azure
 EXPOSE 80
 
-# Set environment variable for Flask
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=80
 
-# Run the app using Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
+CMD ["python", "app.py"]
+

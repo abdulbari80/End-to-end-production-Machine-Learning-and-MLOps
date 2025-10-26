@@ -4,10 +4,6 @@ from prediction import Prediction
 application = Flask(__name__)
 app = application
 
-# --- Utility / health routes ---
-@app.route("/health")
-def health():
-    return "OK", 200
 
 @app.route("/", methods=["GET", "POST"], endpoint="predict_user_salary")
 def predict():
@@ -84,4 +80,10 @@ def predict():
 
     return render_template("index.html", results=None)
 
+# --- Utility / health routes ---
+@app.route("/health")
+def health():
+    return "OK", 200
 
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=80)

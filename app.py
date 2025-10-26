@@ -4,6 +4,11 @@ from prediction import Prediction
 application = Flask(__name__)
 app = application
 
+# --- Utility / health routes ---
+@app.route("/health")
+def health():
+    return "OK", 200
+
 @app.route("/", methods=["GET", "POST"], endpoint="predict_user_salary")
 def predict():
     if request.method == "POST":

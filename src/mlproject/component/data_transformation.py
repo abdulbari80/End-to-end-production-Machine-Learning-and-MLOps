@@ -268,6 +268,7 @@ class DataTransformation:
             X_train_arr = column_transormer_pipeline.fit_transform(X_train)
             X_test_arr = column_transormer_pipeline.transform(X_test)
             logging.info("Data columns are transformed")
+            # save data transformation pipeline object to artifacts
             joblib.dump(column_transormer_pipeline, 
                         os.path.join(self.config.root_dir, 
                                      self.config.data_transform_obj_name))

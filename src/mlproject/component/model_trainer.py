@@ -9,8 +9,9 @@ from catboost import CatBoostRegressor
 from sklearn.ensemble import (RandomForestRegressor,
                               AdaBoostRegressor,
                               GradientBoostingRegressor)
+from sklearn.neighbors import KNeighborsRegressor
 from xgboost import XGBRegressor
-from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet 
+from sklearn.linear_model import Ridge, Lasso, ElasticNet 
 from sklearn.metrics import r2_score, mean_absolute_error
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
@@ -19,111 +20,130 @@ class ModelTrainer:
     def __init__(self, config:ModelTrainerConfig):
         self.config=config
 
-    def train_model_grid_search(self, models:dict, params:dict, *, cv=3) -> dict:
+    def find_best_models(self, models: dict, params: dict, *, 
+                         cv:int = 3, test_size:float = 0.20) -> dict:
         try:
             data_arr = joblib.load(self.config.train_array_path)
-            X_train = data_arr[:,:-1]
-            y_trian = data_arr[:,-1]
-            grid_result = {}
+            train_arr, valid_arr = train_test_split(data_arr, test_size=test_size, random_state=42)
+
+            X_train = train_arr[:, :-1]
+            y_train = train_arr[:, -1]
+            X_valid = valid_arr[:, :-1]
+            y_valid = valid_arr[:, -1]
+
+            grid_results = {}
             logging.info("GridSearchCV starts to iterate over each model")
             total_sec = 0
-            # Iterate over selected models to find optimal parameter combination
+            scoring = {'r2': 'r2', 'neg_mae':'neg_mean_absolute_error'}
             for name, model in models.items():
                 start_time = datetime.now()
-                # List initiated to sort models with respective r2 score
-                result = []
-                gsc = GridSearchCV(model, 
-                                   params[name], 
-                                   cv=cv, 
-                                   scoring='r2',
-                                   refit=True,
-                                   n_jobs=-1)
-                gsc.fit(X_train, y_trian)
-                result.append(gsc.best_estimator_)
-                score = []
-                score.append(gsc.best_score_)
-                result.append(score)
-                result.append(list(params[name].keys()))
-                grid_result[name] = result
+                # parameter grid
+                param_grid = params.get(name, {})
+                gsc = GridSearchCV(model, param_grid, cv=cv, scoring=scoring, 
+                                   refit='r2', n_jobs=-1)
+                gsc.fit(X_train, y_train)
+
+                best_model = gsc.best_estimator_  # refit model
+                train_r2 = gsc.best_score_
+                y_pred = best_model.predict(X_valid)
+                valid_r2 = r2_score(y_valid, y_pred)
+
+                # store all info in one dictionary
+                grid_results[name] = {
+                    'model': best_model,
+                    'best_params': gsc.best_params_,
+                    'train_r2': train_r2,
+                    'valid_r2': valid_r2}
+
                 end_time = datetime.now()
-                duration = end_time - start_time
-                dur_in_sec = int(duration.total_seconds())
-                total_sec += dur_in_sec
-                dur_in_min = dur_in_sec // 60
-                dur_in_sec = dur_in_sec % 60
-                logging.info(f"{name} trained in {dur_in_min}m: {dur_in_sec}s")
-            total_min = total_sec // 60
-            total_sec = total_sec % 60
-            logging.info(f"Total training time: {total_min}m: {total_sec}s")
-            return grid_result
-        
+                duration = (end_time - start_time).total_seconds()
+                total_sec += duration
+                dur_min, dur_sec = divmod(int(duration), 60)
+
+                logging.info(f"{name} trained in {dur_min}m {dur_sec}s")
+                logging.info(f"train_r2: {train_r2:.4f}, validation_r2: {valid_r2:.4f}")
+                logging.info("...............................................")
+
+            total_min, total_sec = divmod(int(total_sec), 60)
+            logging.info(f"Total training time: {total_min}m {total_sec}s")
+            return grid_results
+
         except BoxValueError as e:
             logging.error(f"Error: {e}")
 
-    def find_top_models(self, top_n=3):
+    def tune_and_select_models(self):
+        """
+        Perform grid search over multiple models using predefined hyperparameter grids
+        and store results to artifact and print best model results.
+
+        Parameters: 
+            None
+
+        Returns: 
+            None
+        """
         try:
+            logging.info("Starting grid search across all models...")
+
             models = {
-                'Linear Regression': LinearRegression(),
-                'Ridge': Ridge(),
-                'Lasso': Lasso(max_iter=15000),
-                'ElasticNet': ElasticNet(max_iter=15000),
-                'Random Forest': RandomForestRegressor(),
-                'Gradient Boosting': GradientBoostingRegressor(),
-                'XGBoosting': XGBRegressor(),
-                'AdaBoost': AdaBoostRegressor(),
-                'CatBoost': CatBoostRegressor(verbose=False),
+                'ridge': Ridge(),
+                'lasso': Lasso(max_iter=50000),
+                'enet': ElasticNet(max_iter=30000),
+                'rf': RandomForestRegressor(random_state=42),
+                'gbr': GradientBoostingRegressor(random_state=42),
+                'xgb': XGBRegressor(random_state=42),
+                'abr': AdaBoostRegressor(random_state=42),
+                'cat': CatBoostRegressor(random_state=42, verbose=False),
+                'knn': KNeighborsRegressor()
             }
 
             params = {
-                'Linear Regression': {},
-                'Ridge': {
-                    'alpha': [1, 5, 10, 15, 20]
-                },
-                'Lasso': {
-                    'alpha': [10, 15, 20, 25, 30]
-                },
-                'ElasticNet': {
-                    'alpha': [0.001, 0.01, 0.1, 1, 2],
-                    'l1_ratio': [0.6, 0.5, 0.4, 0.30]
-                },
-                'Random Forest': {
-                    'n_estimators': [8, 16, 32, 64, 128, 256]
-                },
-                'Gradient Boosting': {
-                    'learning_rate': [0.1, 0.05, 0.01],
-                    'n_estimators': [16, 32, 64, 128, 256],
-                    'subsample': [0.6, 0.7, 0.8]
-                },
-                'XGBoosting': {
-                    'learning_rate': [0.1, 0.05, 0.01],
-                    'n_estimators': [16, 32, 64, 128, 256]
-                },
-                'AdaBoost': {
-                    'learning_rate': [0.1, 0.05,0.01],
-                    'n_estimators': [16, 32, 64, 128, 256]
-                },
-                'CatBoost': {
-                    'learning_rate': [0.1, 0.05, 0.01],
-                    'depth': [6, 8, 10],
-                    'iterations': [30, 50, 100]
-                }
+                'ridge': {'alpha': [0.01, 0.1, 1, 10, 100]},
+                'lasso': {'alpha': [0.01, 0.1, 1, 10, 100, 200]},
+                'enet': {'alpha': [0.001, 0.01, 0.1, 1, 10, 100],
+                        'l1_ratio': [0.7, 0.5, 0.3, 0.1]},
+                'rf': {'n_estimators': [100, 200, 500, 1000],
+                    'max_depth': [3, 5, 10, 15, None],
+                    'max_features': ['sqrt', 'log2', 0.8, None]},
+                'gbr': {'learning_rate': [0.01, 0.05, 0.1, 0.2],
+                        'n_estimators': [100, 200, 500, 1000],
+                        'subsample': [0.5, 0.7, 0.9, 1.0]},
+                'xgb': {'learning_rate': [0.01, 0.05, 0.1, 0.2],
+                        'n_estimators': [100, 200, 500, 1000],
+                        'max_depth': [3, 5, 7, 10]},
+                'abr': {'learning_rate': [0.01, 0.05, 0.1, 0.2],
+                        'n_estimators': [100, 200, 500, 1000]},
+                'cat': {'learning_rate': [0.01, 0.05, 0.1, 0.2],
+                        'depth': [4, 6, 8, 10],
+                        'iterations': [50, 100, 200, 500, 1000]},
+                'knn': {'n_neighbors': [3, 5, 7, 9, 15, 21]}
             }
-            
-            results = self.train_model_grid_search(models, params,cv=3)
-            logging.info(">>>>> Grid search finished!")
-            # Select top three models based on mean_absolute_error
-            top_3_model = sorted(results.items(), 
-                                 key=lambda item:item[1][1][0], reverse=True)[:top_n]
-            ## to locate source of error
-            logging.info(">>>>> top models sorted!!!")
-            joblib.dump(top_3_model, os.path.join(self.config.root_dir,
-                                              self.config.grid_result))
-            logging.info("Top three models are saved in the artifacts!")
-            best_model = top_3_model[1]
-            joblib.dump(best_model, os.path.join(self.config.root_dir, 
-                                                 self.config.model_name))
-            logging.info("Best model saved in the artifacts!")
-            logging.info(f"Best model: {best_model[0]}, r2: {best_model[1][1]}")
+
+            # Perform grid search
+            grid_results = self.find_best_models(models=models, params=params, 
+                                                 cv=3, test_size=0.20)
+
+            logging.info("Grid search successfully completed!")
+
+            # Save results
+            result_path = os.path.join(self.config.root_dir, self.config.grid_results)
+            joblib.dump(grid_results, result_path)
+            logging.info(f"Grid search results saved to {result_path}")
+
+            # Find best model based on validation R2
+            best_model = max(grid_results.items(), key=lambda x: x[1]['valid_r2'])
+            logging.info(f"Best model: {best_model[0]}, \
+                         validation R2: {best_model[1]['valid_r2']:.3f}")
 
         except BoxValueError as e:
-            logging.error(f"Error: {e}")
+            logging.error(f"Box configuration error: {e}")
+            raise e
+
+        except Exception as e:
+            logging.error(f"Unexpected error during grid search: {e}")
+            raise e
+
+
+if __name__ == "__main__":
+    print("This module tunes hyperparameters, picks best models from each estimatore,\
+           saves them to artifacts and isn't meant to be run on its own.")

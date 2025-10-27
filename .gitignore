@@ -24,6 +24,8 @@ catboost_info/
 artifacts/*.csv
 artifacts/*.xlsx
 artifacts/*.parquet
+data_transform_pipeline.joblib
+prod_model.joblib
 
 # Ignore everything in artifacts/
 artifacts/*

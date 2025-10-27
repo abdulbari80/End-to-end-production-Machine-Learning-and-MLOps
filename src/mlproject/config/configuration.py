@@ -4,8 +4,8 @@ from src.mlproject.utils.common import read_yaml, create_directory
 from src.mlproject.entity.config_entity import(DataIngestionConfig,
                                                DataTransformationConfig,
                                                ModelTrainerConfig,
-                                               ModelEvaluationConfig,
-                                               UnitTestConfig)
+                                               ModelEvaluationConfig
+                                               )
 
 class ConfigurationManager:
     """This configures path to access .yaml files and create/ access artifacts"""
@@ -45,10 +45,10 @@ class ConfigurationManager:
         create_directory([config.root_dir])
         model_train_config_obj = ModelTrainerConfig(
             root_dir=config.root_dir,
-            model_name=config.model_name,
+            #model_name=config.model_name,
             train_array_path=config.train_array_path,
             test_array_path=config.test_array_path,
-            grid_result=config.grid_result)
+            grid_results=config.grid_results)
         
         return model_train_config_obj
 
@@ -60,19 +60,8 @@ class ConfigurationManager:
             root_dir=config.root_dir,
             test_data_path=config.test_data_path,
             grid_result_path=config.grid_result_path,
-            model_name=config.model_name,
-            metric_file_name=config.metric_file_name,
+            champ_model=config.champ_model,
+            resuslt_metrics=config.resuslt_metrics,
             mlflow_uri="http://127.0.0.1:5000")
         
         return model_eval_config_obj
-    
-    def get_unit_test_config(self) -> UnitTestConfig:
-        config = self.config.unit_test
-        unit_test_config_obj = UnitTestConfig(
-            data_transform_obj_path=config.data_transform_obj_path,
-            train_arrary_path=config.train_arrary_path,
-            test_array_path=config.test_array_path,
-            training_result_path=config.training_result_path,
-            prod_model_path=config.prod_model_path)
-        
-        return unit_test_config_obj

@@ -19,24 +19,18 @@ class DataTransformationConfig:
 @dataclass(frozen=True)
 class ModelTrainerConfig:
     root_dir: Path
-    model_name: str
+    #model_name: str
     train_array_path: Path
     test_array_path: Path
-    grid_result: str
+    grid_results: str
 
 @dataclass(frozen=True)
 class ModelEvaluationConfig:
     root_dir: Path
     test_data_path: Path
     grid_result_path: Path
-    model_name: str
-    metric_file_name: str
+    champ_model: str
+    resuslt_metrics: str
     mlflow_uri: Path
 
-@dataclass(frozen=True)
-class UnitTestConfig:
-    data_transform_obj_path: Path
-    train_arrary_path: Path
-    test_array_path: Path
-    training_result_path: Path
-    prod_model_path: Path
+

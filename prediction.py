@@ -13,8 +13,8 @@ class Prediction:
         employee_residence_top: str,
         company_location_top: str,
         data_pipeline=None,
-        model=None
-    ):
+        model=None):
+
         self.experience_level = experience_level
         self.employment_type = employment_type
         self.remote_ratio = remote_ratio
@@ -26,7 +26,7 @@ class Prediction:
         self.model = model
 
     def get_prediction(self):
-        # --- Validate input fields ---
+        # user input dictionary
         fields = {
             'experience_level': self.experience_level,
             'employment_type': self.employment_type,
@@ -46,8 +46,8 @@ class Prediction:
         # --- Load model & transformer if not provided ---
         if self.data_pipeline is None or self.model is None:
             try:
-                data_process_pipe_obj = joblib.load(Path("artifacts/data_transformation/data_trans_obj_v1.1.joblib"))
-                prod_model = joblib.load(Path("artifacts/model_evaluation/model_v1.1.joblib"))
+                data_process_pipe_obj = joblib.load("artifacts/data_transformation/data_trans_obj_v1.1.joblib")
+                prod_model = joblib.load(Path("artifacts/model_evaluation/model_v1.2.joblib"))
             except Exception as e:
                 raise RuntimeError(f"Error loading model artifacts: {e}")
         else:

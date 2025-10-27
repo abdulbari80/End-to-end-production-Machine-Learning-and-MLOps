@@ -34,7 +34,6 @@ def predict():
             print(f"⚠️ Missing fields: {missing_fields}")
             return render_template(
                 "index.html",
-                #site_key=RECAPTCHA_SITE_KEY,
                 results="Please fill in all fields before asking Maban.",
             )
 
@@ -64,7 +63,7 @@ def predict():
             result_value = float(result)
         except ValueError:
             result_value = 0
-
+        # warn for unusual input combination when too low salary prediction
         if result_value < 6021:
             message = "Hmm... that seems too low. Please check your input combination."
         else:
@@ -80,10 +79,7 @@ def predict():
 
     return render_template("index.html", results=None)
 
-# --- Utility / health routes ---
+ #--- Utility / health routes ---
 @app.route("/health")
 def health():
     return "OK", 200
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)

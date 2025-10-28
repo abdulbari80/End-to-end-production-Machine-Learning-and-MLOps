@@ -1,20 +1,22 @@
-# Use official Python slim image
-FROM python:3.12.11-slim
+# Use slim Python base image
+FROM python:3.12-slim
 
-# Set working directory
+# Set work directory
 WORKDIR /app
 
-# Copy only requirements first for caching
-COPY requirements.txt ./
+# Copy dependencies first (for caching)
+COPY requirements.txt .
 
-# Upgrade pip and install dependencies
+# Install dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install gunicorn
 
-# Copy the rest of the application
+# Copy project files
 COPY . .
 
-EXPOSE 80
+# Expose port 8000 (Azure expects the container to listen here)
+EXPOSE 8000
 
-CMD ["python", "app.py"]
-
+# Use gunicorn as a production server
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:8000"]

@@ -1,4 +1,4 @@
-name: Build and Deploy Docker Image to Azure ACR
+name: Build and Push Docker Image to Azure ACR
 
 on:
   push:
@@ -6,25 +6,24 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
-    env:
-      SHORT_SHA: ${{ github.sha }}  # full commit hash
+
     steps:
-      # 1️⃣ Checkout the repository
+      # 1️ Checkout the repo
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2️⃣ Log in to Azure Container Registry
+      # 2️Log in to Azure Container Registry
       - name: Log in to Azure Container Registry
-        run: |
+        run : |
           echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ secrets.AZURE_CONTAINER_REGISTRY }} \
             -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
 
-      # 3️⃣ Build Docker image with two tags: latest + short commit hash
+      # 3️ Build Docker image with 'latest' and short commit hash tags
       - name: Build Docker image
         run: |
-          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)   # first 7 characters
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
           docker build \
             -t ${{ secrets.AZURE_CONTAINER_REGISTRY }}/mabanai-salary:latest \
             -t ${{ secrets.AZURE_CONTAINER_REGISTRY }}/mabanai-salary:$SHORT_SHA .
@@ -36,14 +35,9 @@ jobs:
           docker push ${{ secrets.AZURE_CONTAINER_REGISTRY }}/mabanai-salary:latest
           docker push ${{ secrets.AZURE_CONTAINER_REGISTRY }}/mabanai-salary:$SHORT_SHA
 
-      # 5️⃣ Deploy to Azure Web App (with Continuous Deployment)
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
-          images: ${{ secrets.AZURE_CONTAINER_REGISTRY }}/mabanai-salary:latest
+      # 5️⃣ Optional deploy step (to create CD for future updates)
+      # - name: Deploy to Azure Web App
+      #   uses: azure/webapps-deploy@v3
+      #   with:
+      #     app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+      #     images: ${{ secrets.AZURE_CONTAINER_REGISTRY }}/mabanai-salary:latest

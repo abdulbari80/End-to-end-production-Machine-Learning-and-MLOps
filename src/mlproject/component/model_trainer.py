@@ -93,7 +93,7 @@ class ModelTrainer:
                 'gbr': GradientBoostingRegressor(random_state=42),
                 'xgb': XGBRegressor(random_state=42),
                 'abr': AdaBoostRegressor(random_state=42),
-                'cat': CatBoostRegressor(random_state=42, verbose=False),
+                #'cat': CatBoostRegressor(random_state=42, verbose=False),
                 'knn': KNeighborsRegressor()
             }
 
@@ -113,9 +113,9 @@ class ModelTrainer:
                         'max_depth': [3, 5, 7, 10]},
                 'abr': {'learning_rate': [0.01, 0.05, 0.1, 0.2],
                         'n_estimators': [100, 200, 500, 1000]},
-                'cat': {'learning_rate': [0.01, 0.05, 0.1, 0.2],
-                        'depth': [4, 6, 8, 10],
-                        'iterations': [50, 100, 200, 500, 1000]},
+                #'cat': {'learning_rate': [0.01, 0.05, 0.1, 0.2],
+                #        'depth': [4, 6, 8, 10],
+                #        'iterations': [50, 100, 200, 500, 1000]},
                 'knn': {'n_neighbors': [3, 5, 7, 9, 15, 21]}
             }
 

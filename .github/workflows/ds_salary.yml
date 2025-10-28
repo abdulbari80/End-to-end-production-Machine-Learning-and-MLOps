@@ -1,4 +1,4 @@
-name: Build and Push Docker Image to Azure ACR
+name: Build and Deploy Docker Image to Azure ACR
 
 on:
   push:
@@ -6,12 +6,12 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
     env:
       SHORT_SHA: ${{ github.sha }}  # full commit hash
     steps:
-      # 1️⃣ Checkout the repo
+      # 1️⃣ Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -36,9 +36,9 @@ jobs:
           docker push ${{ secrets.AZURE_CONTAINER_REGISTRY }}/mabanai-salary:latest
           docker push ${{ secrets.AZURE_CONTAINER_REGISTRY }}/mabanai-salary:$SHORT_SHA
 
-      # 5️⃣ Optional Deploy step (commented for now)
-      # - name: Deploy to Azure Web App
-      #   uses: azure/webapps-deploy@v3
-      #   with:
-      #     app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
-      #     images: ${{ secrets.AZURE_CONTAINER_REGISTRY }}/mabanai-salary:latest
+      # 5️⃣ Deploy to Azure Web App (with Continuous Deployment)
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          images: ${{ secrets.AZURE_CONTAINER_REGISTRY }}/mabanai-salary:latest

@@ -19,6 +19,7 @@ catboost_info/
 tests/
 src/
 main.py
+setup.py
 LISENCE
 template.py
 

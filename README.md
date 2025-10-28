@@ -1,6 +1,7 @@
 ## AI/ ML/ Data Professionals' Salary Prediction
 
 **Data Collection & Preparation** 
+
 This is an end-to-end machine learning project following MLOps principles. The dataset is chosen from [Kaggle](https://www.kaggle.com/datasets/ruchi798/data-science-job-salaries). Though the data is fairly clean, the year of salaries(target variable) ranges from 2019 to 2023. Hence, the salary figures are projected to the current year 2025 with the global/ US annaul inflation rates to keep the salary figures updated. After relevant EDA, the dataset is split among training, validation and test sets. Scikit Learn's Column Transformer class is applied to process categorical data for training model with ML algorithms. 
 
 **Model Training & Hyperparameter Tuning** 

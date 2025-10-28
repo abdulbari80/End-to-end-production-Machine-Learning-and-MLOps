@@ -37,6 +37,11 @@ jobs:
           docker push ${{ secrets.AZURE_CONTAINER_REGISTRY }}/mabanai-salary:$SHORT_SHA
 
       # 5️⃣ Deploy to Azure Web App (with Continuous Deployment)
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
